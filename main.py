@@ -15,10 +15,6 @@ from pydantic import BaseModel
 
 app = FastAPI(title="Nepse Portfolio Tracker")
 
-# 1. Mount Static Files (Frontend)
-# This allows the browser to find style.css and script.js inside /static
-app.mount("/static", StaticFiles(directory="static"), name="static")
-
 
 class StockEntry(BaseModel):
     symbol: str
