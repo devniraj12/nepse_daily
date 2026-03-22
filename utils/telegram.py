@@ -53,7 +53,7 @@ def send_telegram_report(data: dict):
         msg += f"• {cat}: `{percent:.1f}%`\n"
 
     # 5. Footer
-    msg += "\n🔗 [View Full Dashboard](https://your-app-url.onrender.com/)"
+    msg += "\n🔗 [View Full Dashboard](https://nepse-portfolio-phi.vercel.app/)"
 
     # Send Request
     url = f"https://api.telegram.org/bot{token}/sendMessage"
