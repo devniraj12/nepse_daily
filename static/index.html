@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nepse Portfolio Tracker</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        
+        <header class="main-header">
+            <div class="brand">
+                <h1>Nepse<span>Portfolio</span></h1>
+                <p id="currentDate">Portfolio Overview</p>
+            </div>
+            <div class="actions">
+                <button id="refreshReport" class="btn-primary">Send Telegram Report</button>
+            </div>
+        </header>
+
+        <section class="cards-grid">
+            <div class="card modern-card fade-in">
+                <div class="card-icon">💰</div>
+                <div class="card-content">
+                    <h3>Total Valuation</h3>
+                    <p class="card-value" id="totalPortfolioValue">0 JPY</p>
+                    <span class="card-trend positive">Live Tracking</span>
+                </div>
+            </div>
+
+            <div class="card modern-card fade-in" style="animation-delay: 0.1s;">
+                <div class="card-content">
+                    <h3>Asset Allocation</h3>
+                    <div class="chart-container">
+                        <canvas id="allocationPieChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card modern-card fade-in" style="animation-delay: 0.2s;">
+                <div class="card-icon">📦</div>
+                <div class="card-content">
+                    <h3>Top Asset</h3>
+                    <p class="card-value" id="topAssetName">---</p>
+                    <span class="card-trend" id="topAssetCategory">Category</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="table-section fade-in" style="animation-delay: 0.3s;">
+            <div class="section-header">
+                <h2>Holdings Breakdown</h2>
+            </div>
+            <div class="card add-stock-card">
+                <h3>➕ Add New Asset</h3>
+                <div class="form-group">
+                    <input type="text" id="sym" placeholder="Symbol (HRL, BTC...)">
+                    <input type="number" id="qty" placeholder="Quantity">
+                    <input type="number" id="price" placeholder="Buy Price (NPR)">
+                    <select id="cat">
+                        <option value="nepse">NEPSE</option>
+                        <option value="crypto">Crypto</option>
+                        <option value="silver">Silver</option>
+                        <option value="global">Global</option>
+                    </select>
+                    <button onclick="addNewStock()">Add to Portfolio</button>
+                </div>
+            </div>
+            <div class="table-wrapper">
+                <table id="holdingsTable">
+                    <thead>
+                        <tr>
+                            <th>Asset Symbol</th>
+                            <th>Category</th>
+                            <th>Quantity</th>
+                            <th>Current Price</th>
+                            <th>Total Value</th>
+                        </tr>
+                    </thead>
+                    <tbody id="holdingsBody">
+                        </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
