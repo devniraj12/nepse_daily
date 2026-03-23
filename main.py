@@ -3,7 +3,8 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from datetime import datetime
-
+from fastapi import Request
+import httpx 
 from database import supabase
 
 # Internal Imports
@@ -21,6 +22,10 @@ class StockEntry(BaseModel):
     qty: float
     cat: str
     buy_price: float = 0.0
+
+TOKEN = os.getenv("TELEGRAM_TOKEN")
+BASE_URL = f"https://api.telegram.org/bot{TOKEN}"
+MY_CHAT_ID = int(os.getenv("CHAT_ID", 0))
 
 @app.get("/")
 async def serve_dashboard():
@@ -116,6 +121,28 @@ async def add_stock(entry: StockEntry):
         return {"status": "success", "message": f"Added {entry.symbol}"}
     except Exception as e:
         return {"status": "error", "message": str(e)}
+
+@app.post("/api/webhook")
+async def telegram_webhook(request: Request):
+    data = await request.json()
+    
+    if "message" in data:
+        chat_id = data["message"]["chat"]["id"]
+
+        # --- THE SECURITY GUARD ---
+        if chat_id != MY_CHAT_ID:
+            print(f"Unauthorized access attempt by ID: {chat_id}")
+            return {"ok": True} # We return 'ok' so Telegram stops retrying, but we do nothing.
+        # ---------------------------
+
+        text = data["message"].get("text", "").lower()
+
+        if "update" in text:
+            data = await get_dashboard_data()
+            success = send_telegram_report(data)
+            return {"status": "success" if success else "failed"}
+
+    return {"ok": True}
 
 if __name__ == "__main__":
     import uvicorn

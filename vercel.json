@@ -26,6 +26,14 @@
     {
       "src": "/(.*)",
       "dest": "static/index.html"
+    },
+    { 
+      "src": "/api/(.*)",
+     "dest": "main.py" 
+    },
+    { 
+      "src": "/(.*)", 
+      "dest": "static/index.html" 
     }
   ]
 }
